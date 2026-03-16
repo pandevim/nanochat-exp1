@@ -15,7 +15,7 @@
 #SBATCH --error=logs/nanochat_test_%j.err
 
 # ── Paths — edit these to match your environment ─────────────────────────────
-NANOCHAT_DIR="$HOME/nanochat"          # Where you cloned the repo
+NANOCHAT_DIR="$HOME/nanochat-exp1"          # Where you cloned the repo
 SIF_IMAGE="$HOME/containers/nanochat.sif"
 CHECKPOINT_DIR="$HOME/checkpoints/nanochat_test"
 # ─────────────────────────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ module load apptainer
 
 # ── Load secrets (WandB key etc.) ────────────────────────────────────────────
 # Uncomment if you use dotenvx like your reference script:
-# source ~/.secrets/nanochat.key
+source ~/.secrets/nanochat.key
 # OR export directly:
 # export WANDB_API_KEY="your-key-here"
 
