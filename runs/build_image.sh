@@ -10,7 +10,7 @@ DEF_FILE="nanochat.def"
 SIF_OUT="$HOME/containers/nanochat.sif"
 
 # Scratch space for the build (uses fast local storage if available)
-BUILD_TMPDIR="${TMPDIR:-/tmp}/nanochat_build_$$"
+BUILD_TMPDIR="${TMPDIR}/nanochat_build_$$"
 mkdir -p "$BUILD_TMPDIR" "$HOME/containers"
 
 echo "Loading apptainer module..."
