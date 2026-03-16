@@ -22,7 +22,7 @@ DEF_FILE="$HOME/nanochat-exp1/runs/nanochat.def"
 SIF_OUT="$HOME/containers/nanochat.sif"
 
 # Use fast local SSD for the build (much faster than home/NFS)
-BUILD_TMPDIR="/local/${SLURM_JOB_ID}/nanochat_build"
+BUILD_TMPDIR="${TMPDIR}/nanochat_build_$$"
 mkdir -p "$BUILD_TMPDIR" "$HOME/containers" logs
 
 echo "[$(date)] Starting Apptainer image build (job ${SLURM_JOB_ID})"
