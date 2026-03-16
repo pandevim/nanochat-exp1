@@ -1,0 +1,49 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/pytorch:25.01-py3
+
+%labels
+    Author nanochat-hpc
+    Version 1.0
+    Description nanochat training image based on NGC PyTorch 25.01
+
+%post
+    # Upgrade pip and install nanochat dependencies
+    pip install --upgrade pip --quiet
+
+    # Core training dependencies
+    pip install --quiet \
+        tiktoken \
+        wandb \
+        einops \
+        datasets \
+        huggingface_hub \
+        transformers \
+        uv
+
+    # Clean up to reduce image size
+    pip cache purge
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    # Ensure CUDA libraries are found
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    # Prevent tokenizer parallelism warnings
+    export TOKENIZERS_PARALLELISM=false
+    # Disable wandb telemetry prompts in non-interactive runs
+    export WANDB_CONSOLE=off
+
+%runscript
+    exec "$@"
+
+%help
+    Apptainer image for nanochat LLM training.
+    Use with --nv flag to enable GPU support.
+
+    Quick test (d12, ~5 min):
+        apptainer exec --nv nanochat.sif python -m scripts.base_train -- \
+            --depth=12 --run=test --save-every=500
+
+    Full GPT-2 training (d26, ~16h on 1xH100):
+        apptainer exec --nv nanochat.sif python -m scripts.base_train -- \
+            --depth=26 --run=gpt2 --save-every=1000
