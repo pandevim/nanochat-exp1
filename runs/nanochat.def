@@ -7,11 +7,16 @@ From: nvcr.io/nvidia/pytorch:25.01-py3
     Description nanochat training image based on NGC PyTorch 25.01
 
 %post
+
+    # ── Venv (inherits torch/CUDA, isolates pyarrow from cudf pins) ──
+    python3 -m venv /opt/nanochat-env --system-site-packages
+    . /opt/nanochat-env/bin/activate
+
     # Upgrade pip and install nanochat dependencies
-    pip install --upgrade pip --quiet
+    pip install --no-cache-dir --upgrade pip --quiet
 
     # Core training dependencies
-    pip install --quiet \
+    pip install --no-cache-dir --quiet \
         tiktoken \
         wandb \
         einops \
@@ -20,12 +25,12 @@ From: nvcr.io/nvidia/pytorch:25.01-py3
         transformers \
         uv
 
-    # Clean up to reduce image size
-    pip cache purge
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
-
 %environment
+
+    # Activate venv for every invocation
+    export VIRTUAL_ENV=/opt/nanochat-env
+    export PATH="/opt/nanochat-env/bin:$PATH"
+
     # Ensure CUDA libraries are found
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
     # Prevent tokenizer parallelism warnings
