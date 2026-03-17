@@ -56,7 +56,7 @@ sed 's|^Bootstrap:.*|Bootstrap: localimage|; s|^From:.*|From: '"${LOCAL_BASE_SIF
 
 echo "[$(date)] Building nanochat image (no --fakeroot needed, no %post installs)..."
 APPTAINER_TMPDIR="$BUILD_TMPDIR" \
-apptainer build "${SIF_OUT}" "${BUILD_DEF}"
+apptainer build --force "${SIF_OUT}" "${BUILD_DEF}"
 
 echo "[$(date)] Done! Image saved to: ${SIF_OUT}"
 echo "Size: $(du -sh "${SIF_OUT}" | cut -f1)"
