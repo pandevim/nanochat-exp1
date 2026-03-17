@@ -11,8 +11,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=64G
 #SBATCH --time=00:30:00
-#SBATCH --output=logs/nanochat_test_%j.out
-#SBATCH --error=logs/nanochat_test_%j.err
+#SBATCH --output=/home/%u/logs/nanochat_test_%j.out
+#SBATCH --error=/home/%u/logs/nanochat_test_%j.err
 
 # ── Paths — edit these to match your environment ─────────────────────────────
 NANOCHAT_DIR="$HOME/nanochat-exp1"          # Where you cloned the repo
