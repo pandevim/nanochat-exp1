@@ -60,6 +60,7 @@ echo "[$(date)] Container and environment ready. Starting training..."
 # ── Run nanochat d12 test ─────────────────────────────────────────────────────
 # d12 = GPT-1 scale, ~5 min on 1xH100 — enough to confirm everything works
 ~/.local/bin/dotenvx run -- apptainer exec --nv \
+    --env LD_LIBRARY_PATH=/usr/local/cuda/compat/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH \
     --pwd /workspace \
     "${SIF_IMAGE}" \
     python -m scripts.base_train \
