@@ -57,16 +57,16 @@ echo "[$(date)] Container and environment ready. Starting training..."
 # ── Run nanochat d12 test ─────────────────────────────────────────────────────
 # d12 = GPT-1 scale, ~5 min on 1xH100 — enough to confirm everything works
 apptainer exec --nv \
+    --bind $HOME/nanochat-exp1:/workspace \
     --pwd /workspace \
     "${SIF_IMAGE}" \
     python -m scripts.base_train \
-        --depth=12 \
-        --run="nanochat_test_${SLURM_JOB_ID}" \
-        --model-tag="test_d12" \
-        --save-dir=/checkpoints \
-        --save-every=200 \
-        --core-metric-every=999999 \
-        --sample-every=-1
+    --depth=12 \
+    --run="nanochat_test_${SLURM_JOB_ID}" \
+    --model-tag="test_d12" \
+    --save-every=200 \
+    --core-metric-every=-1 \
+    --sample-every=-1
 
 echo "[$(date)] Test job finished. Check logs/nanochat_test_${SLURM_JOB_ID}.out"
 echo "If successful, submit the full training job: sbatch train_nanochat.sbatch"
