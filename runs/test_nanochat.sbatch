@@ -56,7 +56,7 @@ echo "[$(date)] Container and environment ready. Starting training..."
 
 # ── Run nanochat d12 test ─────────────────────────────────────────────────────
 # d12 = GPT-1 scale, ~5 min on 1xH100 — enough to confirm everything works
-apptainer exec --nv \
+~/.local/bin/dotenvx run -- apptainer exec --nv \
     --bind $HOME/nanochat-exp1:/workspace \
     --pwd /workspace \
     "${SIF_IMAGE}" \
