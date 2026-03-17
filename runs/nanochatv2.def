@@ -27,6 +27,7 @@ From: nvcr.io/nvidia/pytorch:25.01-py3
         rustbpe
 
 %environment
+    export LD_LIBRARY_PATH=/cm/local/apps/cuda/libs/current/lib64:/usr/local/cuda/lib64:${LD_LIBRARY_PATH:-}
 
     # Activate venv for every invocation
     export VIRTUAL_ENV=/opt/nanochat-env
