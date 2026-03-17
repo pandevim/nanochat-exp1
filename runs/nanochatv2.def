@@ -1,0 +1,54 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/pytorch:25.01-py3
+
+%labels
+    Author nanochat-hpc
+    Version 1.0
+    Description nanochat training image based on NGC PyTorch 25.01
+
+%post
+
+    # ── Venv (inherits torch/CUDA, isolates pyarrow from cudf pins) ──
+    python3 -m venv /opt/nanochat-env --system-site-packages
+    . /opt/nanochat-env/bin/activate
+
+    # Upgrade pip and install nanochat dependencies
+    pip install --no-cache-dir --upgrade pip --quiet
+
+    # Core training dependencies
+    pip install --no-cache-dir --quiet \
+        tiktoken \
+        wandb \
+        einops \
+        datasets \
+        huggingface_hub \
+        transformers \
+        uv
+
+%environment
+
+    # Activate venv for every invocation
+    export VIRTUAL_ENV=/opt/nanochat-env
+    export PATH="/opt/nanochat-env/bin:$PATH"
+
+    # Ensure CUDA libraries are found
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    # Prevent tokenizer parallelism warnings
+    export TOKENIZERS_PARALLELISM=false
+    # Disable wandb telemetry prompts in non-interactive runs
+    export WANDB_CONSOLE=off
+
+%runscript
+    exec "$@"
+
+%help
+    Apptainer image for nanochat LLM training.
+    Use with --nv flag to enable GPU support.
+
+    Quick test (d12, ~5 min):
+        apptainer exec --nv nanochat.sif python -m scripts.base_train -- \
+            --depth=12 --run=test
+
+    Full GPT-2 training (d26, ~16h on 1xH100):
+        apptainer exec --nv nanochat.sif python -m scripts.base_train -- \
+            --depth=26 --run=gpt2 --save-every=1000
