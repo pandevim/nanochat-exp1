@@ -59,7 +59,7 @@ echo "[$(date)] Container and environment ready. Starting training..."
 apptainer exec --nv \
     --pwd /workspace \
     "${SIF_IMAGE}" \
-    python -m scripts.base_train -- \
+    python -m scripts.base_train \
         --depth=12 \
         --run="nanochat_test_${SLURM_JOB_ID}" \
         --model-tag="test_d12" \

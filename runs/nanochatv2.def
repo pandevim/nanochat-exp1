@@ -47,9 +47,9 @@ From: nvcr.io/nvidia/pytorch:25.01-py3
     Use with --nv flag to enable GPU support.
 
     Quick test (d12, ~5 min):
-        apptainer exec --nv nanochat.sif python -m scripts.base_train -- \
+        apptainer exec --nv nanochat.sif python -m scripts.base_train \
             --depth=12 --run=test
 
     Full GPT-2 training (d26, ~16h on 1xH100):
-        apptainer exec --nv nanochat.sif python -m scripts.base_train -- \
+        apptainer exec --nv nanochat.sif python -m scripts.base_train \
             --depth=26 --run=gpt2 --save-every=1000
