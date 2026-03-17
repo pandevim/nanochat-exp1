@@ -41,8 +41,11 @@ export APPTAINER_TMPDIR="${LOCAL_DIR}/apptainer_tmp"
 # Bind: HuggingFace cache → fast SSD, nanochat source → /workspace
 export APPTAINER_BIND="\
 ${LOCAL_DIR}/hf_cache:/root/.cache/huggingface,\
+$HOME/.cache/nanochat:/root/.cache/nanochat,\
 ${NANOCHAT_DIR}:/workspace,\
 ${CHECKPOINT_DIR}:/checkpoints"
+
+export NANOCHAT_BASE_DIR=/root/.cache/nanochat
 
 module load apptainer
 
@@ -57,7 +60,6 @@ echo "[$(date)] Container and environment ready. Starting training..."
 # ── Run nanochat d12 test ─────────────────────────────────────────────────────
 # d12 = GPT-1 scale, ~5 min on 1xH100 — enough to confirm everything works
 ~/.local/bin/dotenvx run -- apptainer exec --nv \
-    --bind $HOME/nanochat-exp1:/workspace \
     --pwd /workspace \
     "${SIF_IMAGE}" \
     python -m scripts.base_train \
